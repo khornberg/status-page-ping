@@ -1,0 +1,21 @@
+service: status-page-ping
+
+provider:
+  name: aws
+  runtime: python3.6
+  memorySize: 128
+  timeout: 10
+  stage: dev
+  region: us-east-2
+
+plugins:
+  - serverless-python-requirements
+
+functions:
+  api:
+    handler: handler.main
+    events:
+      - http:
+          path: /
+          method: get
+          integration: lambda-proxy
