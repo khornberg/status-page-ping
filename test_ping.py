@@ -9,7 +9,7 @@ class TestPing():
         assert result['status'] == 200
         assert result['reason'] == 'OK'
         assert result['url'] == 'http://python.org'
-        assert abs(0.3 - result['elasped']) < 0.1
+        assert abs(0.3 - result['elasped']) < 0.3
 
     def test_ping_multiple(self):
         results = get(['http://python.org', 'https://pypi.org', 'https://khornberg.github.io'])
@@ -17,7 +17,7 @@ class TestPing():
         assert result['status'] == 200
         assert result['reason'] == 'OK'
         assert result['url'] == 'http://python.org'
-        assert abs(0.3 - result['elasped']) < 0.1
+        assert abs(0.3 - result['elasped']) < 0.3
         result = results[1]
         assert result['status'] == 200
         assert result['reason'] == 'OK'
