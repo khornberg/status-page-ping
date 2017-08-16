@@ -1,6 +1,7 @@
 import aiohttp
 import asyncio
 import time
+from datetime import datetime
 
 default_urls = ['http://python.org']
 
@@ -16,7 +17,13 @@ async def ping(loop, url):
         start = time.time()
         response = await fetch(session, url)
         elasped = time.time() - start
-        return {'status': response.status, 'reason': response.reason, 'url': url, 'elasped': elasped}
+        return {
+            'status': response.status,
+            'reason': response.reason,
+            'url': url,
+            'elasped': elasped,
+            'dtg': datetime.strptime(response.headers['Date'], '%a, %d %b %Y %H:%M:%S GMT').timestamp()
+        }
 
 
 async def get_pings(loop, urls):
