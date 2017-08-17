@@ -11,7 +11,7 @@ class TestPing():
         assert result['reason'] == 'OK'
         assert result['url'] == 'http://python.org'
         assert abs(0.3 - result['elasped']) < 1
-        assert abs(datetime.utcnow().timestamp() - result['dtg']) < 1
+        assert abs(datetime.utcnow().timestamp() - result['dtg']) < 6
 
     def test_ping_multiple(self):
         results = get(['http://python.org', 'https://pypi.org', 'https://khornberg.github.io'])
