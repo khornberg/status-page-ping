@@ -2,14 +2,23 @@ import aiohttp
 import asyncio
 import time
 from datetime import datetime
+from collections import namedtuple
 
 default_urls = ['http://python.org']
 
 
+def make_408(url):
+    Response = namedtuple('Response', ['status', 'reason', 'url', 'headers'])
+    date = datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')
+    return Response(408, 'Request Timeout', url, {'Date': date})
+
+
 async def fetch(session, url):
-    with aiohttp.Timeout(10, loop=session.loop):
-        async with session.get(url) as response:
+    try:
+        async with session.get(url, timeout=3) as response:
             return response
+    except asyncio.TimeoutError:
+        return make_408(url)
 
 
 async def ping(loop, url):
@@ -22,7 +31,7 @@ async def ping(loop, url):
             'reason': response.reason,
             'url': url,
             'elasped': elasped,
-            'dtg': datetime.strptime(response.headers['Date'], '%a, %d %b %Y %H:%M:%S GMT').timestamp()
+            'dtg': datetime.strptime(response.headers.get('Date'), '%a, %d %b %Y %H:%M:%S GMT').timestamp()
         }
 
 
@@ -34,3 +43,7 @@ def get(_urls=None):
     urls = _urls or default_urls
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(get_pings(loop, urls))
+
+
+if __name__ == '__main__':
+    print(get())
