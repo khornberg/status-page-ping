@@ -1,5 +1,5 @@
+async-timeout==2.0.1
 aiohttp==3.0.8
-async-timeout==2.0.0
 chardet==3.0.4
 multidict==4.1.0
 py==1.5.2
